@@ -2,10 +2,31 @@
 
 import React, { useRef } from "react";
 import StarRatings from "react-star-ratings";
+import { useContext } from "react";
+import cartContext, { CartProvider } from "@/context/CartContext";
 
 
 const ProductDetails = ({ product }) => {
-    const inStock=true;
+
+  const { addItemToCart } = useContext(cartContext);
+  const imgRef = useRef(null);
+
+  const setImgPreview = (url) => {
+    imgRef.current.src = url;
+  };
+
+  const inStock = product?.stock >= 1;
+
+  const addToCartHandler = () => {
+    addItemToCart({
+      product: product._id,
+      name: product.name,
+      price: product.price,
+      stock: product.stock,
+      seller: product.seller,
+    });
+  };
+
   return (
     <>
       <section className="bg-white py-10">
@@ -76,7 +97,7 @@ const ProductDetails = ({ product }) => {
               <p className="mb-4 text-gray-500">{product?.description}</p>
 
               <div className="flex flex-wrap gap-2 mb-5">
-                <button className="px-4 py-2 inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700">
+                <button className="px-4 py-2 inline-block text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700" onClick={addToCartHandler}>
                   <i className="fa fa-shopping-cart mr-2"></i>
                   Add to cart
                 </button>
