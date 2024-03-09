@@ -118,9 +118,11 @@ export default function App() {
                   className="capitalize"
                 >
                   <div className="space-y-1 font-medium">
-                    <p>
-                      {session?.user?.email}
-                      {console.log(session)}
+                  <p>
+                      {session?.user?.username}
+                      <time className="block text-sm text-gray-500 dark:text-gray-400">
+                        {session?.user?.email}
+                      </time>
                     </p>
                   </div>
                 </Button>
@@ -130,8 +132,11 @@ export default function App() {
                 color='default'
                 variant='shadow'
               >
-                <DropdownItem key="new">New file</DropdownItem>
-                <DropdownItem key="copy">Copy link</DropdownItem>
+                <DropdownItem key="profile" className="h-14 gap-2">
+            <p className="font-bold">Signed in as</p>
+            <p className="font-bold">{session.user?.email}</p>
+          </DropdownItem>
+                <DropdownItem key="copy"><Link href="/me">Profile</Link></DropdownItem>
                 <DropdownItem key="edit">Edit file</DropdownItem>
                 <DropdownItem key="logout" color="danger">
               <button onClick={() => {signOut(); handleHideDropdown()}} >Logout</button>

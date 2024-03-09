@@ -4,6 +4,7 @@ import User from "@/models/user";
 import { signJwtToken } from "@/lib/jwtSign";
 import bcrypt from 'bcrypt'
 import { dbConnect } from "@/lib/dbConnect";
+import { userAgent } from "next/server";
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -32,8 +33,6 @@ const handler = NextAuth({
 
                     const accessToken = signJwtToken(currentUser, {expiresIn: '1d'})
 
-                    console.log(currentUser)
-
                     return {
                         ...currentUser,
                         accessToken
@@ -48,15 +47,16 @@ const handler = NextAuth({
     callbacks: {
         async jwt({token, user}){
             if(user){
+                
                 token.accessToken = user.accessToken
-                token._id = user._id
+                token.user=user
             }
 
             return token
         },
         async session({session, token}){
             if(token){
-                session.user._id = token._id
+                session.user = token.user
                 session.user.accessToken = token.accessToken
             }
 
