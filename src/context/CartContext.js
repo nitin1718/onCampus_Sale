@@ -1,55 +1,82 @@
-"use client"
+"use client";
+
 import { useRouter } from "next/navigation";
-import { createContext } from "react";
-import React from "react";
+import React,{ createContext } from "react";
 
-const cartContext = createContext()
+const CartContext = createContext();
 
-export const CartProvider=({children})=>{
+export const CartProvider = ({ children }) => {
+  const [cart, setCart] = React.useState([]);
 
-    const [cart,setCart]= React.useState([])
-    const router = useRouter;
+  const router = useRouter;
 
-    React.useEffect(()=>{
-        setCartToState()
-    },[])
+  React.useEffect(() => {
+    setCartToState();
+  }, []);
 
-    const setCartToState=()=>{
-        setCart(
-            localStorage.getItem('cart')?JSON.parse(localStorage.getItem('cart')) :[]
-        )
+  const setCartToState = () => {
+    setCart(
+      localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart"))
+        : []
+    );
+  };
+
+  const addItemToCart = async ({
+    product,
+    name,
+    price,
+    image,
+    stock,
+    seller,
+    quantity = 1,
+  }) => {
+    const item = {
+      product,
+      name,
+      price,
+      image,
+      stock,
+      seller,
+      quantity,
+    };
+
+    const isItemExist = cart?.cartItems?.find(
+      (el) => el.product === item.product
+    );
+
+    let newCartItems;
+
+    if (isItemExist) {
+      newCartItems = cart?.cartItems?.map((el) =>
+        el.product === isItemExist.product ? item : el
+      );
+    } else {
+      newCartItems = [...(cart?.cartItems || []), item];
     }
 
-    const addItemToCart=async({
-        product,name,price,stock,seller,quantity=1
-    })=>{
-        const item ={
-            product,name,price,stock,seller,quantity
-        }
+    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
+    setCartToState();
+  };
 
-        const ifItemExists= cart?.cartItems?.find((el)=>{
-            el.product===item.product
-        })
+  const deleteItemFromCart = (id) => {
+    const newCartItems = cart?.cartItems?.filter((i) => i.product !== id);
 
-        let newCartItems;
+    localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
+    setCartToState();
+  };
 
-        if(ifItemExists){
-           newCartItems= cart?.cartItems?.map((el)=>{
-            ifItemExists.product===el.product?item:el
-           })
-        }
-        else{
-           newCartItems =[...(cart?.cartItems||[]),item]
-        }
-        localStorage.setItem("cart", JSON.stringify({ cartItems: newCartItems }));
-        setCartToState();
-    }
-    return(
-        <cartContext.Provider value={{cart,addItemToCart}}>
-        {children}
-        </cartContext.Provider>
-    )
-}
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        addItemToCart,
+        deleteItemFromCart,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+};
 
-
-export default cartContext;
+export default CartContext;
