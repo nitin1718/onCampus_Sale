@@ -2,16 +2,19 @@
 
 import React from 'react'
 import { ArrowRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { signIn } from 'next-auth/react'
+import { parseCallbackUrl } from '../helpers/helpers'
 
 export default function Page() {
 
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const router = useRouter()
+    const params = useSearchParams()
+    const callBackUrl=params.get('callbackUrl')
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -27,7 +30,7 @@ export default function Page() {
         }
 
         try {
-            const res = await signIn('credentials', { email, password, redirect: false })
+            const res = await signIn('credentials', { email, password, callbackUrl:callBackUrl?parseCallbackUrl(callBackUrl):"/"})
 
             if (res?.error == null) {
                 router.push("/")

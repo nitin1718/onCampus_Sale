@@ -4,6 +4,7 @@ import User from "@/models/user";
 import { NextResponse } from "next/server";
 
 
+
 export async function POST(req){
 
     await dbConnect();
@@ -35,6 +36,7 @@ export async function POST(req){
         return NextResponse.json({message:"User registered successfully"},{status:201})
 
     } catch (error) {
+
         return NextResponse.json({error:"some error is there"+error},{status:500})
     }
 }

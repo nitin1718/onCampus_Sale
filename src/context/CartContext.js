@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import React,{ createContext } from "react";
-
+import axios from "axios";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = React.useState([]);
+  const [error, setError] = React.useState(null);
 
-  const router = useRouter;
+  const router = useRouter();
 
   React.useEffect(() => {
     setCartToState();
@@ -66,12 +67,37 @@ export const CartProvider = ({ children }) => {
     setCartToState();
   };
 
+
+  const addNewAddress = async (address) => {
+    try {
+
+      const { data } = await axios.post(
+        `http://localhost:3000/api/address`,
+        address
+      );
+
+      if (data) {
+        router.push("/me");
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
+      console.log(error)
+    }
+  };
+
+  const clearErrors = () => {
+    setError(null);
+  };
+
   return (
     <CartContext.Provider
       value={{
         cart,
         addItemToCart,
+        error,
         deleteItemFromCart,
+        addNewAddress,
+        clearErrors,
       }}
     >
       {children}
