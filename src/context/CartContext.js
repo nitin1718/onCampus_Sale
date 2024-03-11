@@ -3,9 +3,16 @@
 import { useRouter } from "next/navigation";
 import React,{ createContext } from "react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+
+
 const CartContext = createContext();
 
+
+
 export const CartProvider = ({ children }) => {
+
+  const { data: session } = useSession()
   const [cart, setCart] = React.useState([]);
   const [error, setError] = React.useState(null);
 
@@ -68,12 +75,18 @@ export const CartProvider = ({ children }) => {
   };
 
 
-  const addNewAddress = async (address) => {
+const addNewAddress = async (address) => {
     try {
 
       const { data } = await axios.post(
         `http://localhost:3000/api/address`,
-        address
+        address,
+        {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session?.user?.accessToken}`
+          }
+        }
       );
 
       if (data) {
@@ -84,6 +97,7 @@ export const CartProvider = ({ children }) => {
       console.log(error)
     }
   };
+
 
   const clearErrors = () => {
     setError(null);

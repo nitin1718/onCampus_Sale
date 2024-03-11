@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
-export function middleware(req) {
+
+export async function middleware(req) {
+
 
   const path = req.nextUrl.pathname
 
@@ -10,6 +12,7 @@ export function middleware(req) {
   const nextCookies = cookies()
 
   const token = nextCookies.get('next-auth.session-token')
+
 
   if(isPublicPath&&token){
     return NextResponse.redirect(new URL('/', req.nextUrl))
@@ -26,6 +29,5 @@ export const config = {
   matcher: [
     '/login',
     '/register',
-    '/me'
   ]
 }

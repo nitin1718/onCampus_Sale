@@ -6,11 +6,8 @@ import { CartProvider } from "@/context/CartContext"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-export default function GlobalProvider({children,session}){
+const GlobalProvider=({children,session})=>{
     return(
-        <>
-        <ToastContainer position="bottom-right" />
         <SessionProvider session={session}>
     <NextUIProvider>
     <CartProvider>
@@ -18,6 +15,7 @@ export default function GlobalProvider({children,session}){
         </CartProvider>
         </NextUIProvider>
     </SessionProvider>
-    </>
     )
 }
+
+export default GlobalProvider
