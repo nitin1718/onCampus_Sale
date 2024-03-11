@@ -15,6 +15,7 @@ export const CartProvider = ({ children }) => {
   const { data: session } = useSession()
   const [cart, setCart] = React.useState([]);
   const [error, setError] = React.useState(null);
+  const [updated, setUpdated] = React.useState(false);
 
   const router = useRouter();
 
@@ -79,7 +80,7 @@ const addNewAddress = async (address) => {
     try {
 
       const { data } = await axios.post(
-        `http://localhost:3000/api/address`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/address`,
         address,
         {
           headers: {
@@ -98,6 +99,52 @@ const addNewAddress = async (address) => {
     }
   };
 
+  const updateAddress = async (id, address) => {
+    try {
+      const { data } = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/address/${id}`,
+        address,
+        {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session?.user?.accessToken}`
+          }
+        }
+      );
+
+      if (data) {
+        
+        setUpdated(true);
+        router.replace(`/address/${id}`);
+        
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const deleteAddress = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/address/${id}`,
+        {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session?.user?.accessToken}`
+          }
+        }
+      );
+
+      if (data) {
+        router.push("/me");
+      }
+    } catch (error) {
+      setError(error?.response?.data?.message);
+      console.log(error)
+    }
+  };
+
+
 
   const clearErrors = () => {
     setError(null);
@@ -112,6 +159,10 @@ const addNewAddress = async (address) => {
         deleteItemFromCart,
         addNewAddress,
         clearErrors,
+        updated,
+        setUpdated,
+        updateAddress,
+        deleteAddress
       }}
     >
       {children}

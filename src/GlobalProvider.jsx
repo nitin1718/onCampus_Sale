@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const GlobalProvider=({children,session})=>{
     return(
+        <>
+        <ToastContainer position="bottom-right"/>
         <SessionProvider session={session}>
     <NextUIProvider>
     <CartProvider>
@@ -15,6 +17,7 @@ const GlobalProvider=({children,session})=>{
         </CartProvider>
         </NextUIProvider>
     </SessionProvider>
+    </>
     )
 }
 

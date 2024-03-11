@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 
 const getAddresses = async () => {
   try {
-    const response = await fetch(`${process.env.API_URL}/api/address`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/address`, {
       method: "GET",
       headers: headers(), 
     });

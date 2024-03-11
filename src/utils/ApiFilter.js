@@ -5,7 +5,7 @@ class APIFilters{
     }
 
     search(){
-        console.log(this.queryStr.get('keyword'))
+      
         const keyword = this.queryStr.get('keyword')
         ?
         {

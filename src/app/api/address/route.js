@@ -19,7 +19,7 @@ export async function GET(req, res) {
   await dbConnect();
 
   try {
-    const addresses = await Address.find();
+    const addresses = await Address.find({user:session.user._id});
 
     return NextResponse.json({
       addresses,
@@ -49,7 +49,10 @@ export async function POST(req) {
     }
 
   try {
+
     const data = await req.json();
+
+    data.user = user._id
 
     const newAddress = await Address.create(data);
 
