@@ -38,6 +38,8 @@ export default function App() {
     router.push('/login');
   };
 
+
+
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
   const toggleMenu = () => {
@@ -46,6 +48,7 @@ export default function App() {
   const [showDropdown, setShowDropdown] = React.useState(false)
 
   const { data: session } = useSession()
+
 
   const handleShowDropdown = () => setShowDropdown(prev => true)
 
@@ -107,7 +110,7 @@ export default function App() {
           <div className="flex items-center mb-4 space-x-3 mt-4 cursor-pointer">
             <img
               className="w-10 h-10 rounded-full"
-              src='https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg'
+              src={session?.user?.avatar||'https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg'}
             />
 
             <Dropdown>
@@ -137,7 +140,7 @@ export default function App() {
             <p className="font-bold">{session.user?.email}</p>
           </DropdownItem>
                 <DropdownItem key="copy"><Link href="/me">Profile</Link></DropdownItem>
-                <DropdownItem key="edit">Edit file</DropdownItem>
+                <DropdownItem key="edit"><Link href={`/me/${session?.user?._id}`} key={session?.user?._id}>Edit Profile</Link></DropdownItem>
                 <DropdownItem key="logout" color="danger">
               <button onClick={() => {signOut(); handleHideDropdown()}} >Logout</button>
               </DropdownItem>

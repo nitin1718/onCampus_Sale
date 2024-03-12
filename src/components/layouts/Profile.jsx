@@ -15,7 +15,7 @@ const Profile = ({ addresses }) => {
         <div className="relative">
         <img
               className="w-10 h-10 rounded-full"
-              src='https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg'
+              src={session?.user?.avatar||'https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg'}
             />
         </div>
         <figcaption>

@@ -14,39 +14,39 @@ const Filters = () => {
   let queryParams;
 
   function handleClick(checkbox) {
-    if (typeof window !== "undefined") {
-      queryParams = new URLSearchParams(window.location.search);
-    }
+    // if (typeof window !== "undefined") {
+    //   queryParams = new URLSearchParams(window.location.search);
+    // }
 
-    const checkboxes = document.getElementsByName(checkbox.name);
+    // const checkboxes = document.getElementsByName(checkbox.name);
 
-    checkboxes.forEach((item) => {
-      if (item !== checkbox) item.checked = false;
-    });
+    // checkboxes.forEach((item) => {
+    //   if (item !== checkbox) item.checked = false;
+    // });
 
-    if (checkbox.checked === false) {
+    // if (checkbox.checked === false) {
 
-      queryParams.delete(checkbox.name);
-    } else {
-      if (queryParams.has(checkbox.name)) {
-        queryParams.set(checkbox.name, checkbox.value);
-      } else {
-        queryParams.append(checkbox.name, checkbox.value);
-      }
-    }
-    const path = window.location.pathname + "?" + queryParams.toString();
-    // router.push(path);
+    //   queryParams.delete(checkbox.name);
+    // } else {
+    //   if (queryParams.has(checkbox.name)) {
+    //     queryParams.set(checkbox.name, checkbox.value);
+    //   } else {
+    //     queryParams.append(checkbox.name, checkbox.value);
+    //   }
+    // }
+    // const path = window.location.pathname + "?" + queryParams.toString();
+    // // router.push(path);
   }
 
 
   function checkHandler(checkBoxType, checkBoxValue) {
-    if (typeof window !== "undefined") {
-      queryParams = new URLSearchParams(window.location.search);
+    // if (typeof window !== "undefined") {
+    //   queryParams = new URLSearchParams(window.location.search);
 
-      const value = queryParams.get(checkBoxType);
-      if (checkBoxValue === value) return true;
-      return false;
-    }
+    //   const value = queryParams.get(checkBoxType);
+    //   if (checkBoxValue === value) return true;
+    //   return false;
+    // }
   }
   return (
     <aside className="md:w-1/3 lg:w-1/4 px-4">

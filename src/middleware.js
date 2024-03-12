@@ -29,6 +29,6 @@ export const config = {
   matcher: [
     '/login',
     '/register',
-    '/me'
+    '/me/:path*'
   ]
 }

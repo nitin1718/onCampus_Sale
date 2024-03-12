@@ -5,6 +5,7 @@ import { signJwtToken } from "@/lib/jwtSign";
 import bcrypt from 'bcrypt'
 import { dbConnect } from "@/lib/dbConnect";
 import { userAgent } from "next/server";
+
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -21,13 +22,13 @@ const handler = NextAuth({
                 const user = await User.findOne({ email })
 
                 if(!user){
-                    throw new Error("Invalid input")
+                    throw new Error("Invalid Email or Password")
                 }
 
                 const comparePass = await bcrypt.compare(password, user.password)
 
                 if(!comparePass){
-                    throw new Error("Invalid input")
+                    throw new Error("Invalid Email or Password")
                 } else {
                     const {password, ...currentUser} = user._doc
 

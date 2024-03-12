@@ -5,17 +5,6 @@ import UpdateAddress from "@/components/user/updateAddress";
 import { headers } from "next/headers";
 
 const getAddress = async (id) => {
-//   const nextCookies = cookies();
-
-//   const nextAuthSessionToken = nextCookies.get("next-auth.session-token");
-
-//   const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/address/${id}`, {
-//     headers: {
-//       Cookie: `next-auth.session-token=${nextAuthSessionToken?.value}`,
-//     },
-//   });
-
-//   return data?.address;
 try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/address/${id}`, {
       method: "GET",

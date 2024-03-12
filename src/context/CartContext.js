@@ -13,9 +13,12 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
 
   const { data: session } = useSession()
+  
   const [cart, setCart] = React.useState([]);
   const [error, setError] = React.useState(null);
   const [updated, setUpdated] = React.useState(false);
+  const [loading, setLoading] = React.useState(null);
+  const [dupUser, setDupUser] = React.useState(false);
 
   const router = useRouter();
 
@@ -144,6 +147,31 @@ const addNewAddress = async (address) => {
     }
   };
 
+  const updateProfile = async (id,formData) => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/register/${id}`,
+        formData,
+        {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session?.user?.accessToken}`
+          }
+        }
+      );
+
+      if (data) {
+        setDupUser(true)
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error?.response?.data?.message);
+    }
+  };
+
 
 
   const clearErrors = () => {
@@ -162,7 +190,11 @@ const addNewAddress = async (address) => {
         updated,
         setUpdated,
         updateAddress,
-        deleteAddress
+        deleteAddress,
+        updateProfile,
+        loading,
+        dupUser,
+        setDupUser
       }}
     >
       {children}
