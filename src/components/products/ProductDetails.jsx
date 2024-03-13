@@ -24,6 +24,7 @@ const ProductDetails = ({ product }) => {
       price: product.price,
       stock: product.stock,
       seller: product.seller,
+      image: product.images[0].url,
     });
   };
 
@@ -35,7 +36,7 @@ const ProductDetails = ({ product }) => {
             <aside>
               <div className="border border-gray-200 shadow-sm p-3 text-center rounded mb-5">
                 <img
-                //   ref={imgRef}
+                  ref={imgRef}
                   className="object-cover inline-block"
                   src={
                     product?.images[0]
@@ -92,7 +93,7 @@ const ProductDetails = ({ product }) => {
                 <span className="text-green-500">Verified</span>
               </div>
 
-              <p className="mb-4 font-semibold text-xl">${product?.price}</p>
+              <p className="mb-4 font-semibold text-xl">{product?.price} INR</p>
 
               <p className="mb-4 text-gray-500">{product?.description}</p>
 

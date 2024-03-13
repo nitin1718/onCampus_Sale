@@ -26,11 +26,13 @@
     "next-auth": "^4.24.5",
     "next-connect": "^1.0.0",
     "query-string": "^8.2.0",
+    "raw-body": "^2.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-js-pagination": "^3.0.3",
     "react-star-ratings": "^2.3.0",
-    "react-toastify": "^10.0.4"
+    "react-toastify": "^10.0.4",
+    "stripe": "^14.20.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

@@ -59,7 +59,7 @@ const ProductItem = ({ product }) => {
         <div className="md:w-1/4 border-t lg:border-t-0 lg:border-l border-gray-200">
           <div className="p-5">
             <span className="text-xl font-semibold text-black">
-              ${product?.price}
+              {product?.price} INR
             </span>
 
             <p className="text-green-500">Free Shipping</p>

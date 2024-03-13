@@ -10,6 +10,7 @@ const CartContext = createContext();
 
 
 
+
 export const CartProvider = ({ children }) => {
 
   const { data: session } = useSession()
@@ -178,6 +179,22 @@ const addNewAddress = async (address) => {
     setError(null);
   };
 
+
+  const saveOnCheckout = ({ amount, tax, totalAmount }) => {
+    const checkoutInfo = {
+      amount,
+      tax,
+      totalAmount,
+    };
+
+    const newCart = { ...cart, checkoutInfo };
+
+    localStorage.setItem("cart", JSON.stringify(newCart));
+    setCartToState();
+    router.push("/shipping");
+  };
+
+
   return (
     <CartContext.Provider
       value={{
@@ -194,7 +211,8 @@ const addNewAddress = async (address) => {
         updateProfile,
         loading,
         dupUser,
-        setDupUser
+        setDupUser,
+        saveOnCheckout
       }}
     >
       {children}

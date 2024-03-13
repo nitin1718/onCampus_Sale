@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useContext } from "react";
-
 import CartContext from "@/context/CartContext";
 import Link from "next/link";
 
 const Cart = () => {
-  const { addItemToCart, deleteItemFromCart, cart } = useContext(CartContext);
+  const { addItemToCart, deleteItemFromCart, cart, saveOnCheckout } =
+    useContext(CartContext);
 
   const increaseQty = (cartItem) => {
     const newQty = cartItem?.quantity + 1;
@@ -34,6 +34,16 @@ const Cart = () => {
   const taxAmount = (amountWithoutTax * 0.15).toFixed(2);
 
   const totalAmount = (Number(amountWithoutTax) + Number(taxAmount)).toFixed(2);
+
+  const checkoutHandler = () => {
+    const data = {
+      amount: amountWithoutTax,
+      tax: taxAmount,
+      totalAmount,
+    };
+
+    saveOnCheckout(data);
+  };
 
   return (
     <>
@@ -106,11 +116,11 @@ const Cart = () => {
                         <div>
                           <div className="leading-5">
                             <p className="font-semibold not-italic">
-                              ${cartItem.price * cartItem.quantity.toFixed(2)}
+                              {cartItem.price * cartItem.quantity.toFixed(2)} INR
                             </p>
                             <small className="text-gray-400">
                               {" "}
-                              ${cartItem.price} / per item{" "}
+                              {cartItem.price} INR / per item{" "}
                             </small>
                           </div>
                         </div>
@@ -138,7 +148,7 @@ const Cart = () => {
                   <ul className="mb-5">
                     <li className="flex justify-between text-gray-600  mb-1">
                       <span>Amount before Tax:</span>
-                      <span>${amountWithoutTax}</span>
+                      <span>{amountWithoutTax} INR</span>
                     </li>
                     <li className="flex justify-between text-gray-600  mb-1">
                       <span>Total Units:</span>
@@ -152,15 +162,18 @@ const Cart = () => {
                     </li>
                     <li className="flex justify-between text-gray-600  mb-1">
                       <span>TAX:</span>
-                      <span>${taxAmount}</span>
+                      <span>{taxAmount} INR</span>
                     </li>
                     <li className="text-lg font-bold border-t flex justify-between mt-3 pt-3">
                       <span>Total price:</span>
-                      <span>${totalAmount}</span>
+                      <span>{totalAmount} INR</span>
                     </li>
                   </ul>
 
-                  <a className="px-4 py-3 mb-2 inline-block text-lg w-full text-center font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer">
+                  <a
+                    className="px-4 py-3 mb-2 inline-block text-lg w-full text-center font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer"
+                    onClick={checkoutHandler}
+                  >
                     Continue
                   </a>
 
