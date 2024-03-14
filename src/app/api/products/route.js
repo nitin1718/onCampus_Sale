@@ -3,6 +3,7 @@ import product from "@/models/product";
 import { NextResponse, NextRequest } from "next/server";
 import APIFilters from "@/utils/ApiFilter";
 import { NextURL } from "next/dist/server/web/next-url";
+import { verifyJwtToken } from "@/lib/jwt";
 
 
 export async function GET(req, res) {
@@ -21,10 +22,10 @@ export async function GET(req, res) {
 
         products = await apiFilter.query.clone();
 
-    
-        return  NextResponse.json({
+
+        return NextResponse.json({
             products,
-        },{status:200});
+        }, { status: 200 });
 
     } catch (error) {
         return NextResponse.json({ error: 'Error in product get api ' + error }, { status: 500 })
@@ -34,15 +35,34 @@ export async function GET(req, res) {
 
 export async function POST(req) {
     await dbConnect();
-    try {
 
-        const data = await req.json()
+    const accessToken = req.headers.get('authorization')
 
-        const newProduct = await product.create(data)
+    if (accessToken != null) {
+        const token = accessToken.split(" ")[1]
 
-        return NextResponse.json(newProduct, { status: 201 })
+        const user = verifyJwtToken(token)
+        
+        if (!user||user.role!=='admin') {
+            return (NextResponse.json({ error: "unauthorized access" }, { status: 403 }))
+        }
 
-    } catch (error) {
-        return NextResponse.json({ error: 'Error in products post api ' + error }, { status: 500 })
+        try {
+
+            const data = await req.json()
+            
+            data.user = user._id
+
+            const newProduct = await product.create(data)
+
+            return NextResponse.json(newProduct, { status: 201 })
+
+        } catch (error) {
+            return NextResponse.json({ error: 'Error in products post api ' + error }, { status: 500 })
+        }
     }
-}
+    else{
+        return (NextResponse.json({error:"unauthorized access"},{status:403}))
+      }
+
+    }

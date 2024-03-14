@@ -11,6 +11,8 @@ const ProductDetails = ({ product }) => {
   const { addItemToCart } = useContext(cartContext);
   const imgRef = useRef(null);
 
+  let x=1
+
   const setImgPreview = (url) => {
     imgRef.current.src = url;
   };
@@ -24,7 +26,7 @@ const ProductDetails = ({ product }) => {
       price: product.price,
       stock: product.stock,
       seller: product.seller,
-      image: product.images[0].url,
+      image: product.images[0],
     });
   };
 
@@ -40,7 +42,7 @@ const ProductDetails = ({ product }) => {
                   className="object-cover inline-block"
                   src={
                     product?.images[0]
-                      ? product?.images[0].url
+                      ? product?.images[0]
                       : "/images/default_product.png"
                   }
                   alt="Product title"
@@ -49,14 +51,16 @@ const ProductDetails = ({ product }) => {
                 />
               </div>
               <div className="space-x-2 overflow-auto text-center whitespace-nowrap">
-                {product?.images?.map((img) => (
-                  <a
+                {
+                  product?.images?.map((img) => (
+                  
+                  <a key={x++}
                     className="inline-block border border-gray-200 p-1 rounded-md hover:border-blue-500 cursor-pointer"
-                    onClick={() => setImgPreview(img?.url)}
+                    onClick={() => setImgPreview(img)}
                   >
                     <img
                       className="w-14 h-14"
-                      src={img.url}
+                      src={img}
                       alt="Product title"
                       width="500"
                       height="500"

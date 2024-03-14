@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import Order from "@/models/order";
 const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
 import { NextResponse } from "next/server";
+import { dbConnect } from "@/lib/dbConnect";
 
 async function getCartItems(line_items) {
     return new Promise((resolve, reject) => {
@@ -29,6 +30,8 @@ async function getCartItems(line_items) {
 
 
 export async function POST(req, res) {
+
+  await dbConnect()
 
     try {
 

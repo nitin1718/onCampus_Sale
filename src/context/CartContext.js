@@ -35,6 +35,11 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    localStorage.removeItem("cart");
+    setCartToState();
+  };
+
   const addItemToCart = async ({
     product,
     name,
@@ -212,7 +217,8 @@ const addNewAddress = async (address) => {
         loading,
         dupUser,
         setDupUser,
-        saveOnCheckout
+        saveOnCheckout,
+        clearCart
       }}
     >
       {children}

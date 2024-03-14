@@ -1,5 +1,8 @@
 'use client'
 import React from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import {
   Card,
   Typography,
@@ -23,6 +26,9 @@ import {
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export default function Sidebar() {
+
+  const { data: session } = useSession()
+
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value) => {
@@ -36,7 +42,10 @@ export default function Sidebar() {
           Sidebar
         </Typography>
       </div>
+
+
       <List>
+      {session?.user?.role === "admin" && (
         <Accordion
           open={open === 1}
           icon={
@@ -45,7 +54,9 @@ export default function Sidebar() {
               className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
             />
           }
-        >
+        >      
+          
+      
           <ListItem className="p-0" selected={open === 1}>
             <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
               <ListItemPrefix>
@@ -62,23 +73,48 @@ export default function Sidebar() {
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Analytics
+                <Link
+                  href="/admin/products/new"
+                  className="block px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                >New Product <span className="text-red-500">(Admin)</span>
+                </Link>
               </ListItem>
               <ListItem>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Reporting
+                <Link
+                  href="/admin/products"
+                  className="block px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                >All Products <span className="text-red-500">(Admin)</span>
+                </Link>
               </ListItem>
               <ListItem>
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Projects
+                <Link
+                  href="/admin/orders"
+                  className="block px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                >All Orders <span className="text-red-500">(Admin)</span>
+                </Link>
               </ListItem>
+              <ListItem>
+                <ListItemPrefix>
+                  <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                </ListItemPrefix>
+                <Link
+                  href="/admin/users"
+                  className="block px-1 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-500 rounded-md"
+                >All Users <span className="text-red-500">(Admin)</span>
+                </Link>
+              </ListItem>
+
             </List>
+
           </AccordionBody>
         </Accordion>
+        )}
         <Accordion
           open={open === 2}
           icon={
@@ -88,6 +124,7 @@ export default function Sidebar() {
             />
           }
         >
+
           <ListItem className="p-0" selected={open === 2}>
             <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
               <ListItemPrefix>
@@ -104,7 +141,7 @@ export default function Sidebar() {
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Orders
+                <Link href='/me/orders'>Your Orders</Link>
               </ListItem>
               <ListItem>
                 <ListItemPrefix>
@@ -128,19 +165,19 @@ export default function Sidebar() {
           <ListItemPrefix>
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Profile
+          <Link href='/me'>Profile</Link>
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <Cog6ToothIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Settings
+          <Link href={`/me/${session?.user?._id}`} key={session?.user?._id}>Edit Profile</Link>
         </ListItem>
         <ListItem>
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Log Out
+          <button onClick={() => { signOut() }} >Logout</button>
         </ListItem>
       </List>
     </Card>
