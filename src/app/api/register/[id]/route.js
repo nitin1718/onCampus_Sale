@@ -2,7 +2,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import User from "@/models/user";
 import { NextResponse } from "next/server";
 import { verifyJwtToken } from "@/lib/jwt";
-import { uploads } from "@/utils/cloudinary";
+
 import fs from 'fs'
 
 export async function GET(req, res) {
