@@ -12,16 +12,13 @@ export async function GET(req, res) {
 
 
     try {
+        
+  const apiFilters = new APIFilters(product.find(), req.nextUrl.searchParams)
+    .search();
 
+  let products = await apiFilters.query;
 
-        const productsCount = await product.countDocuments()
-
-        const apiFilter = new APIFilters(product.find(), req.nextUrl.searchParams).search();
-
-        let products = await apiFilter.query
-
-        products = await apiFilter.query.clone();
-
+  products = await apiFilters.query.clone();
 
         return NextResponse.json({
             products,
